@@ -1,4 +1,5 @@
 # Importar módulos necesarios
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,9 +12,11 @@ app.config.from_object('configuration.DevelopmentConfig')
 db = SQLAlchemy(app)
 
 
-from my_app.product.views import product
+from my_app.product.product import product
+from my_app.product.category import category
 # Importar las vistas
 app.register_blueprint(product)
+app.register_blueprint(category)
 
 with app.app_context():
     db.create_all()

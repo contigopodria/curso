@@ -1,0 +1,6 @@
+.card.odd{
+    background: rgb(248, 246, 246);
+}
+.card.even {
+    background: rgb(229, 245, 243);
+}

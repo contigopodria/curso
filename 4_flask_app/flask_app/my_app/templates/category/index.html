@@ -2,37 +2,22 @@
 {% from 'macro/_pagination.html' import m_pagination %}
 
 {% block container %}
-<a class="btn btn-outline-success mt-2 " href="{{url_for('product.create')}}"><i
+<a class="btn btn-outline-success mt-2 " href="{{url_for('category.create')}}"><i
         class="fa fa-plus"></i> Crear</a>
-<div class="list-product">
-{% for product in products %}
+<div class="list-category">
+{% for category in categories %}
 <div class="card {{ loop.cycle('odd', 'even') }}  mt-2">
-<div class="card-body pb-2 pt-1 ">
-    <h5 class="card-tittle">
-        <a href="{{url_for('product.show',id=product['id'])}}">
-            {{product['name'] }}
-        </a>
-    </h5>
-    <h7 class="text-body pb-2 pe-5" style="margin-right: 20px;">
-        {{product['category'].name }}
-    </h7>
-    <a class="btn btn-outline-primary btn-sm" style="margin-left: 20px; margin-top: -31px;" href="{{url_for('product.update',id=product['id'])}}">
-        <i class="fa-solid fa-file-pen"></i> Editar
-    </a>
-    <button style="margin-top: -31px;" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-name="{{ product['name'] }}"
-        data-bs-id="{{ product['id'] }}" class="btn btn-outline-danger btn-sm"">
-            <i class=" fa fa-trash"></i> Eliminar
-    </button>
-    
-    
-    
-    
+<div class="card-body p-5 text-white rounded pb-2 pt-0 ">
+    <h5 class="card-tittle"><a class="text-body" href="{{url_for('category.show',id=category['id'])}}">{{
+        category['name'] }}</a></h5>
+    <a class="btn btn-outline-primary btn-sm" href="{{url_for('category.update',id=category['id'])}}"><i class="fa-solid fa-file-pen"></i> Editar</a>
+    <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-name="{{ category['name'] }}" data-bs-id="{{ category['id'] }}" class="btn btn-outline-danger btn-sm""><i class="fa fa-trash"></i> Eliminar</button>
 </div>
 </div>
 {% endfor %}
 </div>
 <br>
-{{ m_pagination(products) }}
+{{ m_pagination(categories) }}
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -43,7 +28,7 @@
             <div class="modal-body bg-light text-danger">
                 ¡ ATENCION !
                 <br>
-                Ésta acción eliminará totalmente el producto
+                Ésta acción eliminará totalmente la categoría
             </div>
             <div class="modal-footer">
                 <a href="#" id="deleteProduct" class="btn btn-outline-danger btn-sm"><i class="fa fa-eraser"></i> Eliminar</a>
@@ -65,7 +50,7 @@
             //
             // Actualizar el contenido del modal.
             var modalTitle = deleteModal.querySelector('.modal-title span').innerHTML=name
-            var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/product-delete/'+id)
+            var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/category-delete/'+id)
 
             
              
