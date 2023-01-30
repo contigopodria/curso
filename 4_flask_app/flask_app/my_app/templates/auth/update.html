@@ -1,0 +1,9 @@
+{% extends 'layaout/base.html' %}
+
+{% block container %}
+<form action="{{ url_for('product.update', id=product.id) }}" method="POST">
+    {% include 'product/_form.html' %}
+    <button type="submit"
+    class="btn btn-outline-success mb-3 mt-3"><i class="fa-solid fa-wrench"></i> Actualizar</button>
+</form>
+{% endblock %}

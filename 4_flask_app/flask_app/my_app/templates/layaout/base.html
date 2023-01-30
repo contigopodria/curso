@@ -7,23 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='product/css/style.custom.css') }}">
+    <!--<link rel="stylesheet" href="{{ url_for('static',filename='css/style.custom.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static',filename='fontawesone/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/dataTables.Bootstrap5.min.css') }}">
+    
     
     <title>CRUD</title>
 </head>
 
 <body>
     {% include 'fragment/_nav.html' %}
-    
     <div class="container">
         {% include 'fragment/_alert.html' %}
         {% block container %}
         {% endblock %}
     </div>
+    <script src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    
+</body>
+<footer>
+<div>
     <!-- Footer -->
     {% include 'fragment/_footer.html' %}
     <!-- Footer -->
-    <script src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
-</body>
-
+</div>
+</footer>
 </html>

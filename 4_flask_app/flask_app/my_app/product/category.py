@@ -1,25 +1,35 @@
 # Importamos módulos necesarios
 from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages, abort
-from my_app import db
+from my_app import db, rol_admin_need
 from my_app.product.model.category import Category, CategoryForm
 from sqlalchemy.sql.expression import not_, or_
-from flask_paginate import Pagination, get_page_parameter
+#from flask_paginate import Pagination, get_page_parameter
+from flask_login import login_required
 
 category = Blueprint('category', __name__)
 
+# Ésta función lo que hace es requerir que el usuario esté logueado para que todas las funciones de éste archivo se realicen
+@category.before_request
+@login_required
+@rol_admin_need
+def constructor():
+    pass
 
-@category.route('/category')
-@category.route('/category/<int:page>')
-def index(page=1):
-    pagination = Category.query.paginate(page=page, per_page=6)
 
-    if page > 1:
-        for page_num in pagination.iter_pages():
-            paginas = (page_num)   
-    else:
-        paginas = page
+@category.route('/categories')
+#@category.route('/category/<int:page>')
+def index():
+    #pagination = Category.query.paginate(page=page, per_page=6)
+    categories = Category.query.all()
 
-    return render_template('category/index.html', categories=pagination, paginas=paginas)
+    #if page > 1:
+        #for page_num in pagination.iter_pages():
+            #paginas = (page_num)   
+    #else:
+        #paginas = page
+
+    return render_template('category/categories.html', categories=categories)
+    #return render_template('category/index.html', categories=pagination, paginas=paginas)
 
 
 @category.route('/category/<int:id>')

@@ -1,27 +1,41 @@
 # Importamos módulos necesarios
 from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages, abort
-from my_app import db
+from my_app import db, rol_admin_need
 from my_app.product.model.products import PRODUCTS
 from my_app.product.model.product import Product, ProductForm
 from my_app.product.model.category import Category
 from sqlalchemy.sql.expression import not_, or_
-from flask_paginate import Pagination, get_page_parameter
+#from flask_paginate import Pagination, get_page_parameter
+from flask_login import login_required
 
 product = Blueprint('product', __name__)
 
+# Ésta función lo que hace es requerir que el usuario esté logueado para que todas las funciones de éste archivo se realicen
+@product.before_request
+@login_required
+@rol_admin_need
+def constructor():
+    pass
 
 @product.route('/')
-@product.route('/home/<int:page>')
-def index(page=1):
-    pagination = Product.query.paginate(page=page, per_page=6)
+def index():
+    return render_template('product/index.html')
 
-    if page > 1:
-        for page_num in pagination.iter_pages():
-            paginas = (page_num)
-    else:
-        paginas = page
 
-    return render_template('product/index.html', products=pagination, paginas=paginas)
+@product.route('/products')
+
+#@product.route('/product/<int:page>')
+def products():
+
+    products = Product.query.all()
+    
+    #if page > 1:
+        #for page_num in pagination.iter_pages():
+            #paginas = (page_num)
+    #else:
+        #paginas = page
+
+    return render_template('product/products.html', products=products)
 
 
 @product.route('/product/<int:id>')

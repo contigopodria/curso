@@ -4,3 +4,19 @@
 .card.even {
     background: rgb(229, 245, 243);
 }
+.centrado {
+    text-align: center;
+}
+.derecha {
+    text-align: right;
+}
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+body {
+    position: relative;
+    padding-bottom: 3em;
+    min-height: 100vh;
+}

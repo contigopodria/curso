@@ -1,0 +1,42 @@
+{% extends 'layaout/base.html' %}
+
+{% block container %}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card shadow">
+                <div class="card-title text-center border-bottom pt-4">
+                    <img src="{{url_for( 'static', filename='logo.png' )}}" alt="Logo"
+                        style=" height: 15%; width: 15%;">
+                    <h2 class="p-3">Acceder</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('fauth.register') }}" method="POST">
+                        <div class="mb-4">
+                            <label for="username" class="form-label">{{ form.username.label }}</label>
+                            {{ form.username(class="form-control") }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">{{ form.password.label }}</label>
+                            {{ form.password(class="form-control") }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">{{ form.confirm.label }}</label>
+                            {{ form.confirm(class="form-control") }}
+                        </div>
+                        <div class="mb-4">
+                            <input type="checkbox" class="form-check-input" id="remember" />
+                            <label for="remember" class="form-label">Recordar</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-outline-success"><i class="fa fa-check-double"></i>
+                                Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

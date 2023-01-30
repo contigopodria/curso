@@ -1,0 +1,163 @@
+{% extends 'layaout/base.html' %}
+
+
+{% block container %}
+
+
+
+<link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/dataTables.bootstrap5.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/buttons.bootstrap5.min.css') }}">
+
+
+
+
+<script src="{{ url_for('static',filename='datatables/js/jquery-3.5.1.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/buttons.bootstrap5.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/jszip.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/pdfmake.min.jss') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/buttons.print.min.js') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/buttons.colVis.min.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#categories').DataTable({
+            orderFixed: [0, 'asc'],
+            dom: '<"row"<"col-sm-4"B><"col-sm-4"l><"col-sm-4"f>>tr<"bottom"<"row"<"col-sm-6"i><"col-sm-6"p>>><"clear">',
+            responsive: true,
+            autoWidth: false,
+            buttons: [{
+                extend: 'copyHtml5',
+                className: 'btn-info',
+                text: '<i class="fa-solid fa-clipboard">',
+                titleAttr: 'Copiar'
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-success',
+                text: '<i class="fa-solid fa-table">',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'csvHtml5',
+                className: 'btn-warning',
+                text: '<i class="fa-solid fa-file-lines">',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'pdf',
+                className: 'btn-danger',
+                text: '<i class="fa-solid fa-file-pdf">',
+                titleAttr: 'PDF'
+            }
+            ],
+            language: {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+            },
+            "lengthMenu": [
+                [8, 5, 10, 20, 50, -1],
+                ['8','5', '10', '20', '50', 'Todos']
+            ],
+        });
+    });
+</script>
+<div style="padding-bottom: 10px;">
+<a class="btn btn-outline-success mt-2"href="{{url_for('category.create')}}"><i class="fa fa-plus"></i> Crear</a>
+</div>
+<table id="categories" class="table table-bordered table-striped table-hover table-sm">
+    <thead class="thead">
+        <tr>
+            <th style="text-align: center; width: 5%;min-width: 90px;">Código</th>
+            <th style="text-align: center; width: 60%;">Descripción</th>
+            <th style="text-align: center; width: 25%;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr class="vertical">
+            <td class="centrado">{{category['id']}}</td>
+            <td class="izquierda">{{category['name']}}</td>
+            <td class="centrado">
+                <a href="{{url_for('category.update',id=category['id'])}}" class="btn btn-outline-primary btn-sm">
+                    <i class="fa-solid fa-file-pen"></i> Editar
+                </a>
+                <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-name="{{ category['name'] }}"
+                    data-bs-id="{{ category['id'] }}" class="btn btn-outline-danger btn-sm"">
+                            <i class=" fa fa-trash"></i> Eliminar
+                </button>
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+</div>
+<br>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="deleteModalLabel">Borrar: <span></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light text-danger">
+                ¡ ATENCION !
+                <br>
+                Ésta acción eliminará totalmente el producto
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="deleteProduct" class="btn btn-outline-danger btn-sm"><i class="fa fa-eraser"></i>
+                    Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"><i
+                        class="fa fa-arrow-right-from-bracket"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var deleteModal = document.getElementById('deleteModal')
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Botón que activó el modal
+        var button = event.relatedTarget
+        // Extraer información de los atributos data-bs-*
+        var name = button.getAttribute('data-bs-name')
+        var id = button.getAttribute('data-bs-id')
+        // Si es necesario, puedes iniciar una solicitud AJAX aquí
+        // y luego realiza la actualización en una devolución de llamada.
+        //
+        // Actualizar el contenido del modal.
+        var modalTitle = deleteModal.querySelector('.modal-title span').innerHTML = name
+        var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/product-delete/' + id)
+
+
+
+    })
+</script>
+{% endblock %}
