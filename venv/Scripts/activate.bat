@@ -1,4 +1,4 @@
-@set "VIRTUAL_ENV=C:\Users\Vicente\Desktop\flask curso\venv"
+@set "VIRTUAL_ENV=C:\Users\Vicente\Documents\Web python\curso\venv"
 
 @if defined _OLD_VIRTUAL_PROMPT (
     @set "PROMPT=%_OLD_VIRTUAL_PROMPT%"
