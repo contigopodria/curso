@@ -17,24 +17,21 @@ product = Blueprint('product', __name__)
 def constructor():
     pass
 
+# Ruta de inicio = index
 @product.route('/')
 def index():
     return render_template('product/index.html')
 
-
+# Lista de productos
 @product.route('/products')
-
 #@product.route('/product/<int:page>')
 def products():
-
     products = Product.query.all()
-    
     #if page > 1:
         #for page_num in pagination.iter_pages():
             #paginas = (page_num)
     #else:
         #paginas = page
-
     return render_template('product/products.html', products=products)
 
 
@@ -101,7 +98,7 @@ def update(id):
         # Creamos mensaje de creación exitosa
         flash('Producto actualizado con éxito')
         return redirect(url_for('product.update', id=product.id))
-
+    # Si hay algún error nos lo muestra
     if form.errors:
         flash(form.errors, 'danger')
 
@@ -146,13 +143,11 @@ def test():
     db.session.commit()
     return 'Flask test'
 
-
+# Rutas para filtrar
 @product.route('/filter/<int:id>')
 def filter(id):
     product = Product.query.get(id)
     return render_template('product/filter.html', product=product)
-
-
 @product.app_template_filter('iva')
 def iva_filter(product):
     if product['price']:
