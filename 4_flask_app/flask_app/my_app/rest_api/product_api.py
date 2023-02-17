@@ -1,6 +1,6 @@
 # Importamos módulos necesarios
 from flask.views import MethodView
-from flask import request
+from flask import request, abort
 from my_app.product.model.product import Product
 from my_app.product.model.category import Category
 from my_app import app, db
@@ -37,10 +37,10 @@ class ProductApi(MethodView):
         try:
             float(request.form['price'])
         except:
-            return sendResJson(None, 'Introducir precio numerico', 403)
+            return sendResJson(None, 'Introducir precio numérico', 403)
         # Validación de la categoría
         if not 'category_id' in request.form:
-            return sendResJson(None, 'Indique una categoria', 403)
+            return sendResJson(None, 'Indique una categoría', 403)
         # Validación del tipo de dato de la categoría
         try:
             int(request.form['category_id'])
@@ -142,14 +142,36 @@ def productToJson(product: Product):
     return {
         'id': product.id,
         'name': product.name,
+        'price': product.price,
         'category_id': product.category.id,
         'category': product.category.name
     }
 
-product_view = ProductApi.as_view('product_view')
+
+# Vistas que corresponden a cada una de las funciones anteriormente definidas
+# product_view = ProductApi.as_view('product_view')
+# Protección de las vistas
+api_username = 'admin'
+api_password = 'admin'
+def protect(f):
+    def decorated(*args, **kwrgs):
+        auth = request.authorization
+        if api_username == auth.username and api_password == auth.password:
+            return f(*args, **kwrgs)
+        return abort(401)
+    return decorated
+
+
+product_view = protect(ProductApi.as_view('product_view'))
+
+
+
+# GET para todos los productos y POST para crear un producto
 app.add_url_rule('/api/products/', 
 view_func=product_view, 
 methods=['GET', 'POST'])
+
+# Localizar producto por id
 app.add_url_rule('/api/products/<int:id>',
 view_func=product_view,
 methods=['GET', 'DELETE', 'PUT'])

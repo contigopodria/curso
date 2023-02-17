@@ -32,18 +32,17 @@ def register():
             flash('Usuario creado con éxito')
             return redirect(url_for('fauth.login'))
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors.items(), 'form-error')
     return render_template('auth/register.html', form=form)
 
 # Login de usuario
 @fauth.route('/login', methods=['GET', 'POST'])
 def login():
-    # >Comprobamos si es usuarios está atuenticado
+    # Comprobamos si el usuarios está atuenticado
     if current_user.is_authenticated:
         return redirect(url_for('product.index'))
 
     form = LoginForm(meta={'csrf': False})
-    
     if form.validate_on_submit():
         # Antes de crear el usuario se comprueba si existe
         user = User.query.filter_by(username=form.username.data).first()
@@ -62,7 +61,7 @@ def login():
             flash("Usuario o contraseña incorrectos", 'danger')
             
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors.items(), 'form-error')
     return render_template('auth/login.html', form=form)
 
 # Cerrar sesión

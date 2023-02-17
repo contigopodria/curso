@@ -1,16 +1,10 @@
 {% extends 'layaout/base.html' %}
 
-
 {% block container %}
-
-
 
 <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/dataTables.bootstrap5.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/buttons.bootstrap5.min.css') }}">
-
-
-
 
 <script src="{{ url_for('static',filename='datatables/js/jquery-3.5.1.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/jquery.dataTables.min.js') }}"></script>
@@ -18,29 +12,11 @@
 <script src="{{ url_for('static',filename='datatables/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.bootstrap5.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/jszip.min.js') }}"></script>
-<script src="{{ url_for('static',filename='datatables/js/pdfmake.min.jss') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/pdfmake.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/vfs_fonts.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.html5.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.print.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.colVis.min.js') }}"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
     $(document).ready(function () {
         $('#categories').DataTable({
@@ -74,17 +50,17 @@
             }
             ],
             language: {
-                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+                "url": "{{ url_for('static',filename='datatables/json/spanish.json') }}"
             },
             "lengthMenu": [
                 [8, 5, 10, 20, 50, -1],
-                ['8','5', '10', '20', '50', 'Todos']
+                ['8', '5', '10', '20', '50', 'Todos']
             ],
         });
     });
 </script>
 <div style="padding-bottom: 10px;">
-<a class="btn btn-outline-success mt-2"href="{{url_for('category.create')}}"><i class="fa fa-plus"></i> Crear</a>
+    <a class="btn btn-outline-success mt-2" href="{{url_for('category.create')}}"><i class="fa fa-plus"></i> Crear</a>
 </div>
 <table id="categories" class="table table-bordered table-striped table-hover table-sm">
     <thead class="thead">
@@ -109,17 +85,11 @@
                 </button>
             </td>
         </tr>
-{% endfor %}
+        {% endfor %}
     </tbody>
 </table>
-
-
-
-
-
 </div>
 <br>
-
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -130,10 +100,10 @@
             <div class="modal-body bg-light text-danger">
                 ¡ ATENCION !
                 <br>
-                Ésta acción eliminará totalmente el producto
+                Ésta acción eliminará totalmente la categoría
             </div>
             <div class="modal-footer">
-                <a href="#" id="deleteProduct" class="btn btn-outline-danger btn-sm"><i class="fa fa-eraser"></i>
+                <a href="#" id="deleteCategory" class="btn btn-outline-danger btn-sm"><i class="fa fa-eraser"></i>
                     Eliminar</a>
                 <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"><i
                         class="fa fa-arrow-right-from-bracket"></i> Cerrar</button>
@@ -154,10 +124,7 @@
         //
         // Actualizar el contenido del modal.
         var modalTitle = deleteModal.querySelector('.modal-title span').innerHTML = name
-        var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/product-delete/' + id)
-
-
-
+        var modalBodyInput = deleteModal.querySelector('#deleteCategory').setAttribute('href', '/category-delete/' + id)
     })
 </script>
 {% endblock %}

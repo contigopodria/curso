@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}">
+
+    <!--<link rel="stylesheet" href="{{ url_for('static',filename='css/style.custom.css') }}">-->
+    <link rel="stylesheet" href="{{ url_for('static',filename='fontawesone/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/dataTables.Bootstrap5.min.css') }}">
+    <link src="{{ url_for('static',filename='bootstrap/datatables.bootstrap5.min.css') }}"></link>
+
+    <title>CRUD</title>
+
+</head>
+
+<body>
+    {% include 'fragment/_nav.html' %}
+    <div class="container">
+        {% include 'fragment/_alert.html' %}
+
+        <div id="app">
+            {% raw %}
+            <product-list></product-list>
+            {% endraw %}
+
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title" id="deleteModalLabel">Borrar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body bg-light text-danger">
+                            ¡ ATENCION !
+                            <br>
+                            Ésta acción eliminará totalmente el producto
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" id="deleteProduct" class="btn btn-outline-danger btn-sm"><i
+                                    class="fa fa-eraser"></i>Eliminar</a>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"><i
+                                    class="fa fa-arrow-right-from-bracket"></i>Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+        integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/js/vue.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/js/vue/components/product-list.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/js/vue/components/product-delete.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/js/vue/components/product-save.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/js/vue/app.js') }}"></script>
+        <!--<script>
+        var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            // Botón que activó el modal
+            var button = event.relatedTarget
+            // Extraer información de los atributos data-bs-*
+            var name = button.getAttribute('data-bs-name')
+            var id = button.getAttribute('data-bs-id')
+            // Si es necesario, puedes iniciar una solicitud AJAX aquí
+            // y luego realiza la actualización en una devolución de llamada.
+            //
+            // Actualizar el contenido del modal.
+            var modalTitle = deleteModal.querySelector('.modal-title span').innerHTML = name
+            var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/product-delete/' + id)
+        })
+    </script>-->
+    </div>
+</body>
+<footer>
+    <div>
+        <!-- Footer -->
+        {% include 'fragment/_footer.html' %}
+        <!-- Footer -->
+    </div>
+</footer>
+
+</html>

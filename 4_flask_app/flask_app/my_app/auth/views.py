@@ -27,7 +27,7 @@ def register():
         flash(form.errors, 'danger')
     return render_template('auth/register.html', form=form)
 
-# CLogin de usuario
+# Login de usuario
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(meta={'csrf': False})

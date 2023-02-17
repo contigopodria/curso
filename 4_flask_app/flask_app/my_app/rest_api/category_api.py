@@ -1,11 +1,12 @@
 # Importamos módulos necesarios
 from flask.views import MethodView
-from flask import request
+from flask import request, abort
 from my_app.product.model.product import Product
 from my_app.product.model.category import Category
 from my_app import app, db
 from my_app.rest_api.helper.request import sendResJson
 import json
+from my_app.rest_api.product_api import api_password, api_username
 
 
 class CategoryApi(MethodView):
@@ -92,10 +93,20 @@ def categoryToJson(category: Category):
         'name': category.name,
     }
 
+
+def protect(f):
+    def decorated(*args, **kwrgs):
+        auth = request.authorization
+        if api_username == auth.username and api_password == auth.password:
+            return f(*args, **kwrgs)
+        return abort(401)
+    return decorated
+
 category_view = CategoryApi.as_view('category_view')
 app.add_url_rule('/api/categories/', 
 view_func=category_view, 
 methods=['GET', 'POST'])
+
 app.add_url_rule('/api/categories/<int:id>',
 view_func=category_view,
 methods=['GET', 'DELETE', 'PUT'])

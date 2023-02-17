@@ -8,13 +8,13 @@ def sendResJson(data, msj, code):
                 'code': code,
                 'msj': msj
             }
-        ), code
+        ), 200
     else:
         return json.dumps(
             {
                 'code': code,
                 'data': data
             }
-        ), code
+        ), 200
 
 

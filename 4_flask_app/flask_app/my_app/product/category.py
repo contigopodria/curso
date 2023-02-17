@@ -6,6 +6,9 @@ from sqlalchemy.sql.expression import not_, or_
 #from flask_paginate import Pagination, get_page_parameter
 from flask_login import login_required
 
+
+from collections import namedtuple
+
 category = Blueprint('category', __name__)
 
 # Ésta función lo que hace es requerir que el usuario esté logueado para que todas las funciones de éste archivo se realicen
@@ -39,7 +42,7 @@ def show(id):
 
 # Eliminar una category
 @category.route('/category-delete/<int:id>')
-def delete(id):
+def deleteCategory(id):
     # PRIMERO Conseguir el registro si existe
     category = Category.query.get_or_404(id)
     # Borramos a la session de la db la variable
@@ -54,7 +57,7 @@ def delete(id):
 # Crear una category
 @category.route('/category-create', methods=['GET', 'POST'])
 def create():
-    form = CategoryForm(meta={'csrf': False})
+    form = CategoryForm()  # meta={'csrf': False}
     if form.validate_on_submit():
         p = Category(request.form['name'])
         # Obtener la sesión de la base y con el método add registramos el  categoryo
@@ -63,9 +66,9 @@ def create():
         db.session.commit()
         # Creamos mensaje de creación exitosa
         flash('Categoría creada con éxito')
-        return redirect(url_for('category.create'))
+        return redirect(url_for('category.index'))
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors.items(), 'form-error')
     return render_template('category/create.html', form=form)
 
 # Actualizar una categoría
@@ -73,21 +76,42 @@ def create():
 def update(id):
     # Variable categoría
     category = Category.query.get_or_404(id)
-    form = CategoryForm(meta={'csrf': False})
+
+    group = namedtuple('Group', ['countryCode', 'phoneCode', 'phone'])
+
+    g1 = group('+34', '96', '2820488')
+    g2 = group('+30', '92', '2720488')
+    g3 = group('+18', '968', '5489317')
+
+    phones = {'phones': [g1, g2, g3]}
+
+    form = CategoryForm(data=phones)  # meta={'csrf': False}
+
+    #del form.telefono
+
+    # Creo una categoría de prueba
+    #c = Category(name = 'Categoria 4')
+
     if request.method == 'GET':
         form.name.data = category.name
+        form.id.data = category.id
     if form.validate_on_submit():
         # Actualizar el categoryo
         category.name = form.name.data
+
+        # Así se envían todos los datos del formulario
+        #form.populate_obj(c)
+        #print(c.name)
+
         # Obtener la sesión de la base y con el método add registramos el  categoryo
         db.session.add(category)
         # Llammamos al commit de la sesión de la base de datos para que surjan los cambios
         db.session.commit()
         # Creamos mensaje de creación exitosa
         flash('Categoría actualizada con éxito')
-        return redirect(url_for('category.update', id=category.id))
+        return redirect(url_for('category.index', id=category.id))
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors.items(), 'form-error')
 
     return render_template('category/update.html', category=category, form=form)
 

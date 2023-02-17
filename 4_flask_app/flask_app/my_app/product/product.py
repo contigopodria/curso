@@ -1,12 +1,16 @@
 # Importamos módulos necesarios
-from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages, abort
-from my_app import db, rol_admin_need
+from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages
+from werkzeug.utils import secure_filename
+from werkzeug.exceptions import abort
+from my_app import db, rol_admin_need, ALLOWED_EXTENSIONS_FILES, app
 from my_app.product.model.products import PRODUCTS
 from my_app.product.model.product import Product, ProductForm
 from my_app.product.model.category import Category
 from sqlalchemy.sql.expression import not_, or_
 #from flask_paginate import Pagination, get_page_parameter
 from flask_login import login_required
+import os
+
 
 product = Blueprint('product', __name__)
 
@@ -16,6 +20,9 @@ product = Blueprint('product', __name__)
 @rol_admin_need
 def constructor():
     pass
+
+def allowed_extensions_file(filename):
+    return ('.' in filename and filename.lower().rsplit('.')[1] in ALLOWED_EXTENSIONS_FILES)
 
 # Ruta de inicio = index
 @product.route('/')
@@ -52,12 +59,12 @@ def delete(id):
     # Mensaje
     flash('Producto eliminado')
     # Redirigimos a la lista index
-    return redirect(url_for('product.index'))
+    return redirect(url_for('product.products'))
 
 # Crear un producto
 @product.route('/product-create', methods=['GET', 'POST'])
 def create():
-    form = ProductForm(meta={'csrf': False})
+    form = ProductForm()  # meta={'csrf': False}
     categories = [(c.id, c.name) for c in Category.query.all()]
     form.category_id.choices = categories
     if form.validate_on_submit():
@@ -69,9 +76,9 @@ def create():
         db.session.commit()
         # Creamos mensaje de creación exitosa
         flash('Producto creado con éxito')
-        return redirect(url_for('product.create'))
+        return redirect(url_for('product.products'))
     if form.errors:
-        flash(form.errors, 'danger')
+        flash(form.errors.items(), 'form-error')
     return render_template('product/create.html', form=form)
 
 # Actualizar un producto
@@ -79,29 +86,44 @@ def create():
 def update(id):
     # Variable producto
     product = Product.query.get_or_404(id)
-    form = ProductForm(meta={'csrf': False})
+    form = ProductForm()  # meta={'csrf': False}
     categories = [(c.id, c.name) for c in Category.query.all()]
     form.category_id.choices = categories
     if request.method == 'GET':
         form.name.data = product.name
         form.price.data = product.price
         form.category_id.data = product.category_id
+        form.file.data = product.file
+        form.id.data = product.id
     if form.validate_on_submit():
         # Actualizar el producto
         product.name = form.name.data
         product.price = form.price.data
         product.category_id = form.category_id.data
+        # Se comprueba si la extensión del archivo es válida
+        file = form.file.data
+        if file:
+            if allowed_extensions_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                product.file = filename
+        else:
+            if product.file and file == None:
+                filename = product.file
+                product.file = filename
+            elif file == None:
+                filename = '0.jpg'
+                product.file = filename
         # Obtener la sesión de la base y con el método add registramos el  producto
         db.session.add(product)
         # Llammamos al commit de la sesión de la base de datos para que surjan los cambios
         db.session.commit()
         # Creamos mensaje de creación exitosa
         flash('Producto actualizado con éxito')
-        return redirect(url_for('product.update', id=product.id))
+        return redirect(url_for('product.products'))
     # Si hay algún error nos lo muestra
     if form.errors:
-        flash(form.errors, 'danger')
-
+        flash(form.errors.items(), 'form-error')
     return render_template('product/update.html', product=product, form=form)
 
 

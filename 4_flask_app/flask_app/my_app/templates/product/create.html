@@ -3,6 +3,7 @@
 {% block container %}
 <form action="{{ url_for('product.create') }}" method="POST">
     {% include 'product/_form.html' %}
-    <button type="submit" class="btn btn-outline-success mb-3 mt-3"><i class="fa fa-check-double"></i> Aceptar</button>
+    <button type="submit" class="btn btn-outline-success btn-sm mb-3 mt-3"><i class="fa fa-check-double"></i> Aceptar</button>
+    <a class="btn btn-outline-secondary btn-sm mb-3 mt-3" href="{{url_for('product.products')}}"><i class="fa fa-arrow-right-from-bracket"></i> Cancelar</a>
 </form>
 {% endblock %}

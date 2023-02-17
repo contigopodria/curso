@@ -1,4 +1,35 @@
 <div class="form-group mb-3 mt-3">
     {{ form.name.label }}
-     {{ form.name(class="form-control mt-1") }}
+    {{ form.name(class="form-control mt-1") }}
 </div>
+<div class="row g-3">
+    <div class="col-auto mb-3 mt-3" style="max-width: 110px;">
+        {{ form.countryCode.label }}
+        {{ form.countryCode(class="form-control mt-1") }}
+    </div>
+    <div class=" col-auto mb-3 mt-3" style="max-width: 135px;">
+        {{ form.phoneCode.label }}
+        {{ form.phoneCode(class="form-control mt-1") }}
+    </div>
+    <div class="col-auto mb-3 mt-3">
+        {{ form.phone.label }}
+        {{ form.phone(class="form-control mt-1") }}
+    </div>
+</div>
+<div>
+    {% if form.telefono %}
+    {{ form.telefono.label }}
+    {{ form.telefono}}
+    {% endif %}
+</div>
+<div>
+    {% for field in form.phones %}
+        <div class="col-auto mb-3 mt-3">
+            {{ field }}
+        </div>
+    {% endfor %}
+</div>
+
+{{ form.recaptcha }}
+{{ form.id }}
+{{ form.csrf_token }}

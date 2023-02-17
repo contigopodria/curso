@@ -7,7 +7,7 @@
         <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="card shadow">
                 <div class="card-title text-center border-bottom pt-4">
-                    <img src="{{url_for( 'static', filename='logo.png' )}}" alt="Logo"
+                    <img src="{{url_for( 'static', filename='imagenes/logo.png' )}}" alt="Logo"
                         style=" height: 15%; width: 15%;">
                     <h2 class="p-3">Acceder</h2>
                 </div>
@@ -44,4 +44,5 @@
         document.getElementById('next').value = params.get('next')
     console.log(document.getElementById('next').value)    
 </script>
+{{ form.csrf_token }}
 {% endblock %}

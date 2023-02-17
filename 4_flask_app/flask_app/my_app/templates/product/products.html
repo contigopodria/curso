@@ -9,37 +9,17 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/dataTables.bootstrap5.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='datatables/css/buttons.bootstrap5.min.css') }}">
 
-
-
-
 <script src="{{ url_for('static',filename='datatables/js/jquery-3.5.1.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.bootstrap5.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/jszip.min.js') }}"></script>
-<script src="{{ url_for('static',filename='datatables/js/pdfmake.min.jss') }}"></script>
+<script src="{{ url_for('static',filename='datatables/js/pdfmake.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/vfs_fonts.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.html5.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.print.min.js') }}"></script>
 <script src="{{ url_for('static',filename='datatables/js/buttons.colVis.min.js') }}"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <script>
     $(document).ready(function () {
@@ -74,7 +54,7 @@
             }
             ],
             language: {
-                "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+                "url": "{{ url_for('static',filename='datatables/json/spanish.json') }}"
             },
             "lengthMenu": [
                 [8, 5, 10, 20, 50, -1],
@@ -98,32 +78,26 @@
     </thead>
     <tbody>
         {% for product in products %}
-        <tr class="vertical">
-            <td class="centrado">{{product['id']}}</td>
-            <td class="izquierda">{{product['name']}}</td>
-            <td class="centrado">{{product['price']}}</td>
-            <td class="centrado">{{product['category_id']}}</td>
-            <td class="centrado">
-                <a href="{{url_for('product.update',id=product['id'])}}" class="btn btn-outline-primary btn-sm">
-                    <i class="fa-solid fa-file-pen"></i> Editar
-                </a>
-                <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-name="{{ product['name'] }}"
-                    data-bs-id="{{ product['id'] }}" class="btn btn-outline-danger btn-sm"">
-                            <i class=" fa fa-trash"></i> Eliminar
-                </button>
-            </td>
-        </tr>
-{% endfor %}
+            <tr class="vertical">
+                <td class="centrado">{{product['id']}}</td>
+                <td class="izquierda">{{product['name']}}</td>
+                <td class="centrado">{{product['price']}}</td>
+                <td class="centrado">{{product['category_id']}}</td>
+                <td class="centrado">
+                    <a href="{{url_for('product.update',id=product['id'])}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-file-pen"></i> Editar
+                    </a>
+                    <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-name="{{ product['name'] }}"
+                        data-bs-id="{{ product['id'] }}" class="btn btn-outline-danger btn-sm"">
+                                <i class=" fa fa-trash"></i> Eliminar
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
-
-
-
-
-
 </div>
 <br>
-
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -139,8 +113,8 @@
             <div class="modal-footer">
                 <a href="#" id="deleteProduct" class="btn btn-outline-danger btn-sm"><i class="fa fa-eraser"></i>
                     Eliminar</a>
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal"><i
-                        class="fa fa-arrow-right-from-bracket"></i> Cerrar</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="fa fa-arrow-right-from-bracket"></i> Cerrar</button>
             </div>
         </div>
     </div>
@@ -159,9 +133,8 @@
         // Actualizar el contenido del modal.
         var modalTitle = deleteModal.querySelector('.modal-title span').innerHTML = name
         var modalBodyInput = deleteModal.querySelector('#deleteProduct').setAttribute('href', '/product-delete/' + id)
-
-
-
     })
 </script>
+
+
 {% endblock %}

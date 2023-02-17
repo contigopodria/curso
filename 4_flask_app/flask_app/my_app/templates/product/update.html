@@ -1,9 +1,11 @@
 {% extends 'layaout/base.html' %}
 
 {% block container %}
-<form action="{{ url_for('product.update', id=product.id) }}" method="POST">
+<form action="{{ url_for('product.update', id=product.id) }}" method="POST" enctype="multipart/form-data">
     {% include 'product/_form.html' %}
     <button type="submit"
-    class="btn btn-outline-success mb-3 mt-3"><i class="fa-solid fa-wrench"></i> Actualizar</button>
+    class="btn btn-outline-success btn-sm mb-3 mt-3"><i class="fa-solid fa-wrench"></i> Actualizar</button>
+    <a class="btn btn-outline-secondary btn-sm mb-3 mt-3" href="{{url_for('product.products')}}"><i class="fa fa-arrow-right-from-bracket"></i> Cancelar</a>
 </form>
+
 {% endblock %}

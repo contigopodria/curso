@@ -2,11 +2,35 @@
     {{ form.name.label }}
      {{ form.name(class="form-control mt-1") }}
 </div>
-<div class="form-group">
+<div class="form-group mb-3 mt-3">
     {{ form.price.label }}
     {{ form.price(class="form-control mt-1") }}
 </div>
-<div class="form-group">
+<!--Este bloque es para mostrar el error causado justamente debajo del campo-->
+<div>
+{% if form.price.errors %}
+    <ul>
+        {% for error in form.price.errors %}
+            <li>
+                {{ error }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</div>
+<div class="form-group mb-3 mt-3">
     {{ form.category_id.label }}
     {{ form.category_id(class="form-control mt-1") }}
 </div>
+<div class="form-group mb-3 mt-3" {% if form.file.data !="0.jpg" %}{% if form.file.data !=None %} style="max-width: 161px;" {% endif %}{% endif %}>
+    {{ form.file.label }}
+    {% if form.file.data !="0.jpg" %}
+        {% if form.file.data !=None %}
+            <img src="{{url_for( 'static',filename='uploads/'+form.file.data)}}" alt="Archivo" style="max-width: 100px; max-height: 100px;">
+        {% endif %}
+    {% endif %}
+    {{ form.file(class="form-control mt-1") }}
+</div>
+{{ form.id }}
+{{ form.csrf_token }}
+
