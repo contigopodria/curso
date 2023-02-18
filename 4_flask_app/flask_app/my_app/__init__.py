@@ -1,16 +1,23 @@
-# Importar módulos necesarios
-from flask import Flask, redirect, url_for
-from flask_wtf import CSRFProtect
+# Importar módulos necesarios 
+from flask import Flask, redirect, url_for#, g, request
+#from flask_wtf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user, logout_user
+#from flask_mail import Mail
 from functools import wraps
+#from flask_babel import Babel
 #from flask_cors import CORS
 import os
+############################# Flask admin
+# from flask_admin import Admin
+# from flask_admin.contrib.sqla import ModelView
+
+
 
 # Creamos aplicación
 app = Flask(__name__)
 # Protegemos la aplicación
-#CSRFProtect(app)
+#csrf = CSRFProtect(app)
 # Variable indica tipo de archivos a subir
 ALLOWED_EXTENSIONS_FILES = set(['pdf', 'jpg', 'jpeg'])
 # Configuración de la carpeta donde se subirán archivos
@@ -26,6 +33,32 @@ app.config.from_object('configuration.DevelopmentConfig')
 # Importamos la base de datos
 db = SQLAlchemy(app)
 
+
+############################################# Flask admin
+# from my_app.auth.model.user import User
+# admin = Admin(app, template_mode='bootstrap3')
+# admin.add_view(ModelView(User, db.session))
+
+#babel = Babel(app)
+
+# Función selección de lenguaje
+#@babel.localeselector
+# def get_locale():
+#     # if a user is logged in, use the locale from the user settings
+#     user = getattr(g, 'user', None)
+#     if user is not None:
+#         return user.locale
+#     # otherwise try to guess the language from the user accept
+#     # header the browser transmits.  We support de/fr/en in this
+#     # example.  The best match wins.
+#     return request.accept_languages.best_match(['es', 'en'])
+
+
+# def get_timezone():
+#     user = getattr(g, 'user', None)
+#     if user is not None:
+#         return user.timezone
+# mail = Mail(app)
 # Creamos el loginManager
 login_manager = LoginManager()
 login_manager.init_app(app)

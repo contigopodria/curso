@@ -1,0 +1,9 @@
+{% extends 'layaout/base.html' %}
+
+{% block container %}
+<h1 style="color: crimson;">Error de solicitud</h1>
+<h5>{{e}}</h5>
+<img src="{{url_for( 'static', filename='imagenes/error_400.jpg' )}}" alt="400"
+    style="position: absolute;left: 50%; top: 50%;transform: translate(-50%, -50%); -webkit-transform: translate(-50%, -50%); width: 27%; min-width: 250px;">
+<a class="btn btn-outline-secondary btn-sm mb-3 mt-3" href="{{ url_for('product.index') }}"><i class="fa-solid fa-backward"></i> Volver</a>
+{% endblock %}

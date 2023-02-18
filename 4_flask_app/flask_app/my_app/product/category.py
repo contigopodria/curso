@@ -1,11 +1,12 @@
 # Importamos módulos necesarios
 from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages, abort
-from my_app import db, rol_admin_need
+from my_app import db, rol_admin_need#, get_locale , mail, app
 from my_app.product.model.category import Category, CategoryForm
 from sqlalchemy.sql.expression import not_, or_
 #from flask_paginate import Pagination, get_page_parameter
 from flask_login import login_required
-
+#from flask_babel import gettext
+#from flask_mail import Message
 
 from collections import namedtuple
 
@@ -24,7 +25,26 @@ def constructor():
 def index():
     #pagination = Category.query.paginate(page=page, per_page=6)
     categories = Category.query.all()
+    # gettext('name')
+    # gettext('save')
+    # gettext('created')
+    # gettext('update')
+    # gettext('delete')
 
+    # print(gettext('save'))
+    # print(get_locale())
+
+#---------------------------------------------------------------------------------
+    # Importamos Message desde flask_mail y definimos msg
+    #msg = Message('Hola flask', recipients=['vye333@hotmail.com'])
+    #msg.body='Hola desde correo mail flask'
+    # Importamos mail desde my_app y enviamos correo
+    #mail.send(msg)
+
+    #with app.open_resource("static/imagenes/logo.png") as fp:
+        
+        #msg.attach("logo.png", "image/png", fp.read())
+#---------------------------------------------------------------------------------
     #if page > 1:
         #for page_num in pagination.iter_pages():
             #paginas = (page_num)   
